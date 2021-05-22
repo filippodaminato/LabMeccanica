@@ -97,7 +97,7 @@ def get_angle_from_data(file_name,nmis):
     
     # media e deviazione standard campionaria
     mean_angle = angle.mean()
-    smean_angle = np.std(angle,ddof=1)/nmis #divido per il numero di misurazioni
+    smean_angle = np.std(angle,ddof=1)/np.sqrt(nmis) #divido per il numero di misurazioni
     
     PrintResult("Angolo",mean_angle,smean_angle,3,"[Rad]" )
     
@@ -107,6 +107,25 @@ def get_angle_from_data(file_name,nmis):
     
     
     return mean_angle,smean_angle
+
+# ricavare angolo (in rad) dal dataset di phyphox (in deg)
+def get_angle(angle_data):
+    
+    angle = angle_data * np.pi/180 # conversion deg to rad
+    
+    # media e deviazione standard campionaria
+    mean_angle = angle.mean()
+    smean_angle = np.std(angle,ddof=1) #divido per il numero di misurazioni
+    
+    PrintResult("Angolo",mean_angle,smean_angle,3,"[Rad]" )
+    
+    convert_factor = 180/np.pi
+    PrintResult("Angolo",mean_angle*convert_factor ,smean_angle*convert_factor,3,"[Deg]" )
+    
+    
+    return mean_angle,smean_angle
+
+
 
 # fit passando il nome del file .csv e l'intervallo di tempo interval=[start,finish]
 def fit_from_gyro_phyphox(file_name, interval,plot=True):
