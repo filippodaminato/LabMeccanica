@@ -38,7 +38,7 @@ def y_estrapolato(x, m, c, sigma_m, sigma_c, cov_mc):
     return y, uy
 
 def lin_fit(x, y, sd_y, xlabel="x [ux]", ylabel="y [uy]", xm=0., xM=1., ym=0., yM=1., 
-            verbose=True, plot=False, setrange=False):
+            verbose=True, plot=False, setrange=False, save_fig=None,):
 
     #pesi
     w_y = np.power(sd_y.astype(float), -2) 
@@ -66,7 +66,7 @@ def lin_fit(x, y, sd_y, xlabel="x [ux]", ylabel="y [uy]", xm=0., xM=1., ym=0., y
         print ('cov(m, c) = ', cov_mc.round(4))
         print ('rho(m, c) = ', rho_mc.round(4))
         
-    if (plot):
+    if (plot or (save_fig is not None) ):
         
         # rappresento i dati
         plt.errorbar(x, y, yerr=sd_y, xerr=0, ls='', marker='.', 
@@ -101,6 +101,9 @@ def lin_fit(x, y, sd_y, xlabel="x [ux]", ylabel="y [uy]", xm=0., xM=1., ym=0., y
         plt.grid()
         
         plt.legend()
+        
+        if save_fig is not None:
+            plt.savefig(save_fig)
         
     return m, np.sqrt(var_m), c, np.sqrt(var_c), cov_mc, rho_mc
 
